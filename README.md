@@ -51,12 +51,41 @@ int main()
 }
 ```
 
+
+```cpp
+namespace Arg
+{
+	NP_MAKE_NAMED_PARAMETER(name);
+}
+
+void Print(Arg::name_<std::string> name)
+{
+	std::cout << "name:" << *name << '\n';
+	std::cout << "length:" << name->length() << '\n';
+}
+
+int main()
+{
+	Print(Arg::name(5, 'A'));
+}
+```
+
 Right-most parameters can have default arguments as follows:
 ```cpp
+namespace Arg
+{
+	NP_MAKE_NAMED_PARAMETER(name);
+}
+
 void Print(Arg::name_<std::string> name = (Arg::name = "anonymous"))
 {
 	std::cout << "name:" << *name << '\n';
 	std::cout << "length:" << name->length() << '\n';
+}
+
+int main()
+{
+	Print();
 }
 ```
 
