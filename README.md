@@ -51,5 +51,14 @@ int main()
 }
 ```
 
+Right-most parameters can have default arguments as follows:
+```cpp
+void Print(Arg::name_<std::string> name = (Arg::name = "anonymous"))
+{
+	std::cout << "name:" << *name << '\n';
+	std::cout << "length:" << name->length() << '\n';
+}
+```
+
 ## License
 NamedParameter is distributed under the MIT license.
