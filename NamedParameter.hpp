@@ -33,7 +33,7 @@ namespace np
 {
 	namespace detail
 	{
-		template <class...>	using Void_t = void;
+		template <class...> using Void_t = void;
 
 		template <class, class = Void_t<>>
 		struct HasOverloadedAddressOf : std::false_type {};
