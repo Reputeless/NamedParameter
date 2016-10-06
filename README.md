@@ -1,5 +1,5 @@
 # NamedParameter
-Simple named parameter interface for modern C++
+**NamedParameter** is a simple named parameter interface for modern C++.
 
 ## Examples
 This prints `month: 12 day: 31` to stdout:
