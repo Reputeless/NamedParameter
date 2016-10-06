@@ -74,7 +74,7 @@ namespace np
 	}
 
 	template <class Tag, class Type>
-	struct NamedParameter
+	class NamedParameter
 	{
 	private:
 
@@ -113,7 +113,7 @@ namespace np
 	};
 
 	template <class Tag, class Type>
-	struct NamedParameter<Tag, Type&>
+	class NamedParameter<Tag, Type&>
 	{
 	private:
 
