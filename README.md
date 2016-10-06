@@ -32,5 +32,24 @@ int main()
 }
 ```
 
+Arguments can also be accessed by `operator*` and `operator->`.
+```cpp
+namespace Arg
+{
+	NP_MAKE_NAMED_PARAMETER(name);
+}
+
+void Print(Arg::name_<std::string> name)
+{
+	std::cout << "name:" << *name << '\n';
+	std::cout << "length:" << name->length() << '\n';
+}
+
+int main()
+{
+	Print(Arg::name = "John");
+}
+```
+
 ## License
 NamedParameter is distributed under the MIT license.
