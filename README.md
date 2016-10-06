@@ -51,7 +51,7 @@ int main()
 }
 ```
 
-`operator()` can construct the object from the arguments.
+`operator()` can construct the object from the arguments to the constructor of the element.
 ```cpp
 namespace Arg
 {
