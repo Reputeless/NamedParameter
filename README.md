@@ -51,7 +51,7 @@ int main()
 }
 ```
 
-
+`operator()` can construct the object from the arguments.
 ```cpp
 namespace Arg
 {
