@@ -12,8 +12,6 @@
 # include <string>
 # include "NamedParameter.hpp"
 
-using namespace np;
-
 namespace Arg
 {
 	NP_MAKE_NAMED_PARAMETER(x);
