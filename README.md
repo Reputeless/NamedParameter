@@ -1,13 +1,13 @@
-# NamedParameter
-**NamedParameter** is a simple named parameter interface for modern C++.
+# siv::NamedParameter
+**siv::NamedParameter** is a simple named parameter interface for modern C++.
 
 ## Examples
 This prints `month: 12 day: 31` to stdout:
 ```cpp
 namespace Arg
 {
-	NP_MAKE_NAMED_PARAMETER(month);
-	NP_MAKE_NAMED_PARAMETER(day);
+	SIV_MAKE_NAMED_PARAMETER(month);
+	SIV_MAKE_NAMED_PARAMETER(day);
 }
 
 void Date_impl(int month, int day)
@@ -36,7 +36,7 @@ Arguments can also be accessed by `operator*` and `operator->`.
 ```cpp
 namespace Arg
 {
-	NP_MAKE_NAMED_PARAMETER(name);
+	SIV_MAKE_NAMED_PARAMETER(name);
 }
 
 void Print(Arg::name_<std::string> name)
@@ -55,7 +55,7 @@ int main()
 ```cpp
 namespace Arg
 {
-	NP_MAKE_NAMED_PARAMETER(name);
+	SIV_MAKE_NAMED_PARAMETER(name);
 }
 
 void Print(Arg::name_<std::string> name)
@@ -70,11 +70,11 @@ int main()
 }
 ```
 
-Right-most parameters can have default arguments as follows:
+Right-most parameters can have default arguments.
 ```cpp
 namespace Arg
 {
-	NP_MAKE_NAMED_PARAMETER(name);
+	SIV_MAKE_NAMED_PARAMETER(name);
 }
 
 void Print(Arg::name_<std::string> name = (Arg::name = "anonymous"))
