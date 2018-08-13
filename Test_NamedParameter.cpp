@@ -2,7 +2,7 @@
 //
 //	Named parameter library for C++
 //
-//	Copyright (C) 2016 Ryo Suzuki <reputeless@gmail.com>
+//	Copyright (C) 2016-2018 Ryo Suzuki <reputeless@gmail.com>
 //
 //	For the license information refer to NamedParameter.hpp.
 //
@@ -14,10 +14,10 @@
 
 namespace Arg
 {
-	NP_MAKE_NAMED_PARAMETER(x);
-	NP_MAKE_NAMED_PARAMETER(y);
-	NP_MAKE_NAMED_PARAMETER(pos);
-	NP_MAKE_NAMED_PARAMETER(color);
+	SIV_MAKE_NAMED_PARAMETER(x);
+	SIV_MAKE_NAMED_PARAMETER(y);
+	SIV_MAKE_NAMED_PARAMETER(pos);
+	SIV_MAKE_NAMED_PARAMETER(color);
 }
 
 struct Vec2
@@ -184,7 +184,7 @@ int main()
 	Test4(Arg::x = std::cref(cw));
 
 	std::cout << "Test4 ()\n";
-	Test4(Arg::x());
+	Test4(Arg::x()); // expected: 0
 	Test4(Arg::x(w));
 	Test4(Arg::x(cw));
 	Test4(Arg::x(100));

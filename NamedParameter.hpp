@@ -31,7 +31,7 @@
 # include <memory>
 # include <utility>
 
-namespace np
+namespace siv
 {
 	template <class Tag, class Type>
 	class NamedParameter
@@ -135,6 +135,6 @@ namespace np
 	};
 }
 
-# define NP_MAKE_NAMED_PARAMETER(name) \
-constexpr auto name = np::NamedParameterHelper<struct name##_tag>{};\
-template <class Type> using name##_ = np::NamedParameterHelper<struct name##_tag>::named_argument_type<Type>
+# define SIV_MAKE_NAMED_PARAMETER(name) \
+constexpr auto name = siv::NamedParameterHelper<struct name##_tag>{};\
+template <class Type> using name##_ = siv::NamedParameterHelper<struct name##_tag>::named_argument_type<Type>
