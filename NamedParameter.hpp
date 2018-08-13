@@ -2,7 +2,7 @@
 //
 //	Named parameter library for C++
 //
-//	Copyright (C) 2016 Ryo Suzuki <reputeless@gmail.com>
+//	Copyright (C) 2016-2018 Ryo Suzuki <reputeless@gmail.com>
 //
 //	Permission is hereby granted, free of charge, to any person obtaining a copy
 //	of this software and associated documentation files(the "Software"), to deal
@@ -28,51 +28,11 @@
 # include <type_traits>
 # include <tuple>
 # include <functional>
+# include <memory>
+# include <utility>
 
 namespace np
 {
-	namespace detail
-	{
-		template <class...> using Void_t = void;
-
-		template <class, class = Void_t<>>
-		struct HasOverloadedAddressOf : std::false_type {};
-
-		template <class Type>
-		struct HasOverloadedAddressOf<Type, Void_t<decltype(std::declval<Type&>().operator&())>> : std::true_type {};
-
-		template <class Type, std::enable_if_t<!HasOverloadedAddressOf<Type>::value>* = nullptr>
-		constexpr Type* AddressOf(Type& ref)
-		{
-			return &ref;
-		}
-
-		template <class Type, std::enable_if_t<HasOverloadedAddressOf<Type>::value>* = nullptr>
-		Type* AddressOf(Type& ref)
-		{
-			return std::addressof(ref);
-		}
-
-		template <class Type, class Tuple, std::size_t... I>
-		constexpr Type MakeFromTuple_impl(Tuple&& t, std::index_sequence<I...>)
-		{
-			return Type(std::get<I>(std::forward<Tuple>(t))...);
-		}
-
-		template <class Type, class Tuple>
-		constexpr Type MakeFromTuple(Tuple&& t)
-		{
-			return detail::MakeFromTuple_impl<Type>(std::forward<Tuple>(t),
-				std::make_index_sequence<std::tuple_size<std::decay_t<Tuple>>::value>{});
-		}
-
-		template <class Type>
-		constexpr Type MakeFromTuple(const std::tuple<>&)
-		{
-			return Type();
-		}
-	}
-
 	template <class Tag, class Type>
 	class NamedParameter
 	{
@@ -88,25 +48,25 @@ namespace np
 		explicit constexpr NamedParameter(Type value)
 			: m_value(value) {}
 
-		template <class U, class V = Type, std::enable_if_t<std::is_convertible<U, V>::value>* = nullptr>
+		template <class U, class V = Type, std::enable_if_t<std::is_convertible_v<U, V>>* = nullptr>
 		constexpr NamedParameter(const NamedParameter<Tag, U>& other)
 			: m_value(other.value()) {}
 
-		template <class... Args, class V = Type, std::enable_if_t<std::is_constructible<V, Args...>::value>* = nullptr>
+		template <class... Args, class V = Type, std::enable_if_t<std::is_constructible_v<V, Args...>>* = nullptr>
 		constexpr NamedParameter(const NamedParameter<Tag, std::tuple<Args...>>& tuple)
-			: m_value(detail::MakeFromTuple<Type>(tuple.value())) {}
+			: m_value(std::make_from_tuple<Type>(tuple.value())) {}
 
-		constexpr const Type* operator-> () const
+		constexpr const Type* operator ->() const
 		{
-			return detail::AddressOf(m_value);
+			return std::addressof(m_value);
 		}
 
-		constexpr const Type& operator* () const
+		[[nodiscard]] constexpr const Type& operator *() const
 		{
 			return m_value;
 		}
 
-		constexpr const Type& value() const
+		[[nodiscard]] constexpr const Type& value() const
 		{
 			return m_value;
 		}
@@ -125,19 +85,19 @@ namespace np
 			: m_ref(nullptr) {}
 
 		constexpr NamedParameter(Type& value) noexcept
-			: m_ref(detail::AddressOf(value)) {}
+			: m_ref(std::addressof(value)) {}
 
-		constexpr Type* operator-> () const
+		constexpr Type* operator ->() const
 		{
 			return m_ref;
 		}
 
-		constexpr Type& operator* () const
+		[[nodiscard]] constexpr Type& operator *() const
 		{
 			return *m_ref;
 		}
 
-		constexpr Type& value() const
+		[[nodiscard]] constexpr Type& value() const
 		{
 			return *m_ref;
 		}
@@ -150,25 +110,25 @@ namespace np
 		using named_argument_type = NamedParameter<Tag, Type>;
 
 		template <class Type>
-		constexpr NamedParameter<Tag, std::decay_t<Type>> operator= (Type&& value) const
+		constexpr NamedParameter<Tag, std::decay_t<Type>> operator =(Type&& value) const
 		{
 			return NamedParameter<Tag, std::decay_t<Type>>(std::forward<Type>(value));
 		}
 
 		template <class... Args>
-		constexpr NamedParameter<Tag, std::tuple<Args...>> operator() (const Args&... args) const
+		constexpr NamedParameter<Tag, std::tuple<Args...>> operator ()(const Args&... args) const
 		{
 			return NamedParameter<Tag, std::tuple<Args...>>(std::make_tuple(args...));
 		}
 
 		template <class Type>
-		constexpr NamedParameter<Tag, Type&> operator= (std::reference_wrapper<Type> value) const
+		constexpr NamedParameter<Tag, Type&> operator =(std::reference_wrapper<Type> value) const
 		{
 			return NamedParameter<Tag, Type&>(value.get());
 		}
 
 		template <class Type>
-		constexpr NamedParameter<Tag, Type&> operator() (std::reference_wrapper<Type> value) const
+		constexpr NamedParameter<Tag, Type&> operator ()(std::reference_wrapper<Type> value) const
 		{
 			return NamedParameter<Tag, Type&>(value.get());
 		}
