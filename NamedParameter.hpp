@@ -137,4 +137,4 @@ namespace siv
 
 # define SIV_MAKE_NAMED_PARAMETER(name) \
 constexpr auto name = siv::NamedParameterHelper<struct name##_tag>{};\
-template <class Type> using name##_ = siv::NamedParameterHelper<struct name##_tag>::named_argument_type<Type>
+template <class Type> using name##_ = decltype(siv::NamedParameterHelper<struct name##_tag>::template named_argument_type<Type>{})
