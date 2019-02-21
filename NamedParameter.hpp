@@ -2,7 +2,7 @@
 //
 //	Named parameter library for C++
 //
-//	Copyright (C) 2016-2018 Ryo Suzuki <reputeless@gmail.com>
+//	Copyright (C) 2016-2019 Ryo Suzuki <reputeless@gmail.com>
 //
 //	Permission is hereby granted, free of charge, to any person obtaining a copy
 //	of this software and associated documentation files(the "Software"), to deal
@@ -137,4 +137,4 @@ namespace siv
 
 # define SIV_MAKE_NAMED_PARAMETER(name) \
 constexpr auto name = siv::NamedParameterHelper<struct name##_tag>{};\
-template <class Type> using name##_ = decltype(siv::NamedParameterHelper<struct name##_tag>::template named_argument_type<Type>{})
+template <class Type> using name##_ = siv::NamedParameter<struct name##_tag, Type>
